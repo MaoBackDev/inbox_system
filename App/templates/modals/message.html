@@ -1,0 +1,53 @@
+{% extends 'modals/base_modal.html' %}
+
+<!-- Modal id -->
+{% block modal-id %} id="message-modal" {% endblock %}
+
+<!-- Modal title -->
+{% block modal-title %} 
+<i class="bi bi-envelope-at-fill"></i> &nbsp;&nbsp; Mensaje
+{% endblock %}
+{% block size-modal %} modal-lg {% endblock %}
+
+<!-- Modal form -->
+{% block modal-form %} 
+<form action="/send_message" method="post" autocomplete="off" class="was-validated" enctype="multipart/form-data">
+    <div class="modal-body">
+        {% csrf_token %}
+        <div class="mb-1">
+            <input type="text" name="name" class="form-control" maxlength="40" placeholder="Nombre" required>
+        </div>
+        <div class="mb-1">
+            <input type="text" name="phone" class="phone form-control" maxlength="40" placeholder="Teléfono" required>
+        </div>
+        <div class="mb-1">
+            <input type="email" name="email" class="form-control" maxlength="80" placeholder="Email" required>
+        </div>
+        <div class="mb-1">
+            <input type="text" name="subject" class="form-control" maxlength="40" placeholder="Asunto" required>
+        </div>
+        <hr>
+        <div class="form-group mb-2">
+            <textarea id="message"  name="message" maxlength="1000" rows="10" class="form-control" placeholder="Digita tu mensaje..." required></textarea>
+        </div>
+        <span id="remaining"></span>
+        <hr>
+        <div class="form-group mb-3">
+            <input type="file" name="file" class="form-control" id="file">
+        </div>
+        <h6 class="text-danger">Importante: para mas de un archivo utilice formato: 
+            <strong class="text-success">rar</strong> o <strong class="text-success">zip</strong>.
+        </h6>
+        <hr>
+        <div class="d-grid gap-2 mb-3 mt-3">
+            <button type="submit" class="btn text-light" style="background-color: #2e856e;">
+                Enviar Mensaje &nbsp;&nbsp;
+                <i class="bi bi-send-fill"></i>
+            </button>
+        </div>
+        <!-- input hidden (message is pending) -->
+        <input type="hidden" name="status" value="Pending">
+    </div>
+</form>
+{% endblock %}
+{% block modal-button-close %} {% endblock %}

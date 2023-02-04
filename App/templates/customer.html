@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %} customer {% endblock title %}
+{% block datetime %}
+    <div id="desk-datetime" class="text-light" style="margin-top: 5px;">
+        <i class="bi bi-person-bounding-box" style="font-size: 20px;"></i>&nbsp;&nbsp;
+        <span style="font-size: 16px;" class="">{{customer.name}}</span>
+    </div>                    
+{% endblock datetime %}
+
+{% block content %}
+<div class="container">
+    <div class="card text-center mt-3">
+        <div class="card-header">
+            Recibido el {{customer.created_at | date:"d \d\e F \d\e Y"}} a las {{customer.created_at | date:'H:i'}}
+        </div>
+        <div class="card-body">
+            <form action="/mark_message/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{customer.id}}">
+                <div class="input-group mb-2">
+                    <span class="input-group-text justify-content-center side-label"><i class="bi bi-telephone-fill"></i></span>
+                    <input class="form-control" id="input-bg" value="{{customer.phone}}" readonly>
+                </div>
+
+                <div class="input-group mb-2">
+                    <span class="input-group-text justify-content-center side-label"><i class="bi bi-envelope-fill"></i></span>
+                    <input class="form-control" id="input-bg" value="{{customer.email}}" readonly>
+                </div>
+
+                <div class="input-group mb-2">
+                    <span class="input-group-text justify-content-center side-label"><i class="bi bi-briefcase-fill"></i></span>
+                    <input class="form-control" id="input-bg" value="{{customer.subject}}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <textarea name="" id="input-bg" class="form-control" rows="10">{{customer.message}}</textarea>
+                </div>
+
+                <div class="input-group mb-3 mt-3">
+                    <a href="/media/{{customer.file}}" class="bg-dark text-light input-group-text justify-content-center side-label text-decoration-none" target="_blank"
+                    >
+                        <i class="bi bi-paperclip"></i>
+                    </a>
+                    
+                    {% if customer.file == '' %}
+                    <input class="form-control" id="input-bg" value="Sin Archivos Adjuntos" readonly> 
+                    {% else %}
+                    <input class="form-control" id="input-bg" value="{{customer.file}}" readonly>
+                    {% endif %} 
+                </div>  
+
+                <!-- Enviar el valor del status al bacjend -->
+                
+                {% if customer.status == 'Pending' %}
+                    <input type="hidden" name="status" class="form-control" value="Read">                    
+                {% endif %}
+                    
+                {% include 'modals/mark.html' %}
+            </form>
+
+            
+            {% if customer.status == 'Pending' %}
+            <a class="btn btn-dark" title="Volver" id="btn-back" data-bs-toggle="modal" data-bs-target="#mark-modal">
+            {% else %}
+            <a href="{% url 'main:inbox' %}" class="btn btn-dark" title="Volver" id="btn-back">
+            {% endif %}
+                <i class="bi bi-arrow-left"></i>
+            </a>  
+
+
+            <a class="btn text-light" title="Responder Email" id="reply" data-bs-toggle="modal" data-bs-target="#reply-modal">
+                <i class="bi bi-reply-all-fill"></i>&nbsp;&nbsp; <span>Responder</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- AJAX SPINNER BACKEND -->
+<div id="bg-spinner">
+    <div id="position-spinner">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border text-success" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+
+

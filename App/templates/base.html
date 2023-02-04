@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=Inbox System, initial-scale=1.0">
+    <title>{% block title %}Inbox . Home{% endblock title %}</title>
+
+    <!-- Bootstrap cdn -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">   
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+    <!-- Boxi Icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Logo -->
+    <link rel="shortcut icon" href="{% static 'images/logo.ico' %}">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+     <!-- Jquery -->
+     <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <!-- Wrraper -->
+    <div class="wrapper">
+        {% block bg-image %}
+        <style>
+            body {
+                background-image: url('/static/images/bg.jpg');
+                background-position: center opx;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: cover;
+            }
+        </style>
+        {% endblock bg-image %}
+            
+        <!-- Block Header -->
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="col-sm">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'main:inbox' %}" class="navbar-brand flex-grow-1" style="color: #fff; margin-left: 25px;">
+                        <i class='bx bx-send bx-rotate-270 align-middle' style="color: #8abaae; font-size: 24px;"></i>&nbsp;
+                        <span class="align-middle">Inbox</span>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'main:home' %}" class="navbar-brand flex-grow-1" style="color: #fff; margin-left: 25px;">
+                        <i class='bx bx-send bx-rotate-270 align-middle' style="color: #8abaae; font-size: 24px;"></i>&nbsp;
+                        <span class="align-middle">Consultoring</span>
+                    </a>
+                    {% endif %}
+                </div>
+
+                <!-- section data and time -->
+                {% block datetime %}{% endblock datetime %}
+
+                <!-- column menu -->
+                <div class="col-sm">
+                    <a href="" class="navbar-brand flex-grow-1" id="btn-nav" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        <i class='bx bx-menu'></i>
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        {% block content %}{% endblock content %}
+    </div>
+
+    <!--Canvas sidebar  -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel">MENÚ</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="d-grid gap-2 mt-3">          
+            {% if user.is_authenticated %}
+            {% block sidebar-inbox %}
+                <center>
+                    <strong>Welcome:</strong>  <span class="text-success">{{user.get_username}}</span>
+                    <br><br>
+                </center>
+                <a href="" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#logout-modal">Logout</a>
+                <a href="{% url 'admin:index' %}" target="_blank" class="btn btn-outline-secondary btn-sm">Admin</a>
+            {% endblock sidebar-inbox %}
+            
+            {% else %}
+            {% block sidebar %}
+            <a href="{% url 'login' %}" class="btn btn-success btn-sm">Login</a>
+            {% endblock sidebar %}
+            {% endif %}
+            <hr><br>
+            <center>
+                <i class='bx bx-send bx-rotate-270' style="color: #e9e9e9; font-size: 150px;"></i>
+            </center>
+        </div>
+    </div>
+    </div>
+
+
+
+    <!-- FOOTER -->
+    <footer class="bg-dark text-center text-lg-start" id="footer">
+        <div class="text-center p-3 text-light" style="background-color: rgba(0, 0, 0, 0.2);">
+            &copy; {% now "Y" %} Copyright:
+            <a href="#" class="text-decoration-none"">
+                <span style="color: #8abaae;">www.pythoncode.com</span>
+            </a>
+        </div>
+    </footer>
+
+    
+    {% block autologout %}
+        <!-- Button to call logout warning -->
+        <button id="warning" class="btn" data-bs-toggle="modal" data-bs-target="#warning-modal" style="display: none;"></button>
+
+        <!-- AUTOLOGOUT BUTTON HIDDEN -->
+        <a href="/auto_logout/" id="info" class="btn" style="display: none;"></a>
+    {% endblock autologout %}
+        
+
+    <!-- ======= INCLUDES ======= -->
+    {% include 'modals/logout.html' %}
+    {% include 'modals/message.html' %}
+    {% include 'modals/email.html' %}
+
+    {% include 'modals/logout_warning.html' %}
+    {% include 'modals/logout_info.html' %}
+
+
+
+    <!-- SHOW MESSAGES FROM BACKEND -->
+    {% if form.errors %}
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>
+            swal("Acceso Denegado !", "Ingrese sus datos correctamente", "info")
+        </script>
+    {% endif %}
+
+    <!-- messages from backend -->
+    
+    {% for message in messages %} 
+        {% if message.tags == 'success' %}
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>
+            let msg = "{{message}}"
+            swal("Perfect !", msg, "success")
+        </script>
+        {% endif %}          
+    {% endfor %}
+        
+    <!-- AUTO LOGOUT (home.html) -->
+    {% for message in messages %} 
+        {% if message.tags == 'info' %}
+        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function(){
+                $('#info-modal').modal('show')
+            })
+        </script>
+
+        {% endif %}          
+    {% endfor %}
+    
+       
+    <!-- Bootstrap Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <!-- Input mask -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8-beta.17/jquery.inputmask.min.js" integrity="sha512-zdfH1XdRONkxXKLQxCI2Ak3c9wNymTiPh5cU4OsUavFDATDbUzLR+SYWWz0RkhDmBDT0gNSUe4xrQXx8D89JIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Typed Js -->
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+    <!-- Sweete alert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <!-- custom js -->
+    <script src="{% static 'js/scripts.js' %}"></script>
+
+    <!-- Typed effect control-->
+    
+    {% block typed %}
+    <script>
+        let typed = new Typed('#element', {
+            strings: [
+                'Somos una compañía de consultoría',
+                'brindamos asesorias personalizadas',
+                'con resultados eficientes e inmediatos'
+            ],
+            typedSpeed: 30,
+            backSpeed: 30,
+            loop: true
+        })
+    </script>
+    {% endblock typed %}
+
+    <!-- Function pulse the text (login page) -->
+    <script>
+        (function pulse () {
+            $('.text-pulse').fadeOut(1000).fadeIn(1000, pulse)
+        }) ()
+
+        // FUNCTION TO SHOW PASSWORD
+        function myFunction() {
+            let p = document.getElementById('password')
+            if(p.type === 'password'){
+                p.type = 'text'
+            }else {
+                p.type = 'password'
+            }
+        }
+
+        // FUNCTION CLOSE OFFCANVAS WHEN BUTTON OF MODAL IS CLICKED
+        jQuery('#offcanvasRight, .offcanvas-body a').click(function() {
+            console.log($(this).attr('href'))
+            jQuery('.offcanvas').offcanvas('hide')
+        })
+
+        // function to accept until 2mb
+        let upload = document.getElementById('file')
+        upload.onchange = function() {
+            if(this.files[0].size > 2 * 1048576) {
+                swal("Atención !", "El archivo no debe ser superior a 2mb.", "info")
+                this.value = ''
+            }
+        }
+
+        // AJAX FUNCTION LOAD SPINNER
+        jQuery(function($){
+            $(document).ajaxSend(function(){
+                $('#bg-spinner').fadeIn(500)
+            })
+
+            $('.send-mail').click(function(){
+                $.ajax({
+                    type: 'GET',
+                    success: function(data){
+                        let d = $.parseJSON(data)
+                        alert(d.Test)
+                    }
+                }).done(function() {
+                    setTimeout(function(){
+                        $('#bg-spinner'.fadeOut(500))
+                    }, 700)
+                })
+            })
+        })
+
+        // CLOSE MODAL AFTER SEND BUTTON IS CLICKED
+        $('.send-mail').click(function(){
+            let msg = $('#email-msg').val()
+            let subject = $('#email-subject').val()
+
+            if((msg != '') && (subject != '')){
+                $('.close-modal').modal('hide')
+            }
+        })
+    </script>     
+</body>
+</html>

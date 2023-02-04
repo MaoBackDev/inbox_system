@@ -1,0 +1,37 @@
+{% extends 'modals/base_modal.html' %}
+
+<!-- Modal id -->
+{% block modal-id %} id="warning-modal" {% endblock %}
+
+<!-- Modal title -->
+{% block modal-title %} 
+<i class="bi bi-exclamation-triangle-fill"></i>&nbsp;&nbsp; Atención
+{% endblock %}
+
+<!-- Modal body -->
+{% block modal-body %} 
+<br>
+<div class="text-center text-secondary">
+    <span class="fa-stack fa-3x">
+        <i class="fas fa-cloud fa-stack-2x"></i>
+        <i class="fas fa-user-shield fa-stack-1x fa-inverse"></i>
+    </span>
+</div>
+<div class="mt-3">
+    <span>El sistema será cerrado en 5 minutos...</span>
+    <div class="container note-warning mt-3">
+        Nota: Si deseas prolongar la sesión 30 minutos más
+        <br>
+        <span class="text-success"><strong> +30 min </strong></span>pulsa el botón
+    </div>
+    
+</div>
+{% endblock %}
+
+{% block modal-button %} 
+<a onclick="window.location.reload()" class="btn btn-outline-dark btn-sm" id="btn-30m">+ 30 min</a>
+<button id="btn-ok-logout" class="btn btn-secondary btn-sm" dat-bs-dismiss="modal">Ok</button>
+{% endblock %}
+
+<!--  -->
+{% block modal-button-close %} {% endblock %}

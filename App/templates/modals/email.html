@@ -1,0 +1,60 @@
+{% extends 'modals/base_modal.html' %}
+
+<!-- Modal id -->
+{% block modal-id %} id="reply-modal" {% endblock %}
+
+<!-- modal close to spinner -->
+{% block close-modal %}close-modal{% endblock close-modal %}
+
+<!-- Modal title -->
+{% block modal-title %} 
+<i class="bi bi-reply-all-fill"></i>&nbsp;&nbsp; Responder
+{% endblock %}
+
+<!-- Modal body -->
+{% block modal-form %} 
+<form action="/email" method="POST" class="was-validated" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal-body">
+        <div>
+            To: <span class="text-success"><strong>{{customer.name}}</strong></span>
+        </div>
+        <!-- input hidden email user -->
+        <div class="form-group input-group-sm mb-3" style="display: none;">
+            <input name="email" value="{{customer.email}}">
+        </div>
+        <div class="form-group mb-3">
+            <input class="form-control" type="email"  name="cc" placeholder="CC (Opcional)">
+        </div>
+        <div class="mb-3">
+            <textarea id="email-msg" name="message" placeholder="Aquí la respuesta..." class="form-control" style="height: 250px;" required></textarea>
+            <div class="invalid-feedback">Requerido</div>
+        </div>
+        <div class="mb-3">
+            <select id="email-subject" name="subject" class="form-select" required>
+                <option value="">Selecciona un asunto</option>
+                <option disabled></option>
+                <option value="reply">Respuesta</option>
+                <option value="audit">Auditoría</option>
+                <option value="document">Documentos</option>
+                <option value="payment">Pagos</option>
+                <option value="Consultoring">Asesoría</option>
+            </select>
+            <div class="invalid-feedback">Requerido</div>
+        </div>
+        <div class="form-group mb-3">
+            <input type="file" class="form-control" name="attach" title="Opcional" multiple>
+        </div>
+        <hr>
+        <div class="mb-3" style="float: right;">
+            <input type="submit" class="btn btn-outline-success btn-sm btn-modal send-mail" value="Enviar">&nbsp;&nbsp;
+            <button class="btn btn-secondary btn-sm btn-modal" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+    <input type="hidden" name="status" value="{{customer.status}}">
+    <input type="hidden" name="customer_id" value="{{customer.id}}">
+</form>
+{% endblock %}
+
+<!-- Modal button -->
+{% block modal-button-close %} {% endblock %}

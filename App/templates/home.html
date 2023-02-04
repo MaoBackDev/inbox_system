@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block autologout %}{% endblock autologout %}
+
+{% block content %}
+<div class="block-position">
+    <h1 class="text-light typed-text">
+        <span id="element" style="color: #c4eee4;"></span>
+    </h1>
+</div>
+
+<!-- section message -->
+<div>
+    <button class="btn text-light pulse m-0" style="background-color: #5ca08e;" data-bs-toggle="modal" data-bs-target="#message-modal">
+        <i class="fas fa-envelope fs-1 m-0"></i>
+    </button>
+</div>
+{% endblock content %}

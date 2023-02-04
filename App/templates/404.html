@@ -1,0 +1,49 @@
+{% extends '500.html' %}
+
+{% block title %} Error 404 {% endblock title %}
+
+{% block sidebar %}
+{% if user.is_authenticated %}
+    <a href="/inbox/" class="btn btn-secondary">Volver</a>
+{% else %}
+    <a href="/" class="btn btn-secondary">Volver</a>
+{% endif %}
+{% endblock sidebar %}
+
+{% block error-body %}
+<span class="text-danger mb-5 error-404">404</span>
+<h6 class="text-danger mb-3 error-text1">La página ingresada no existe</h6>
+<span class="text-dark error-text2">
+    Si estás seguro que esto es un error del sistema, por favor comunícate con nuestro 
+    <a href="#" class="text-primary text-decoration-none fw-bold">equipo de soporte</a>
+</span>
+{% endblock error-body %}
+
+
+<!-- NEGAR LOS BLOQUES INTERNOS DEL ERRO 500 -->
+{% block error-message %}{% endblock error-message %}
+{% block note-error %}{% endblock note-error %}
+
+
+
+
+{% comment %}
+{% block content %} 
+<div class="text-center error align-self-center">
+    <div class="text-center text-danger mb-3">
+
+        <span class="text-danger mb-5 error-404">404</span>
+        <h6 class="text-danger mb-3 error-text1">La página ingresada no existe</h6>
+        <span class="text-dark error-text2">
+            Si estás seguro que esto es un error del sistema, por favor comunícate con nuestro 
+            <a href="#" class="text-primary text-decoration-none fw-bold">equipo de soporte</a>
+        </span>
+    </div>
+    {% if user.is_authenticated %}
+    <a href="/inbox/" class="btn btn-secondary">Volver</a>
+    {% else %}
+    <a href="/" class="btn btn-secondary">Volver</a>
+    {% endif %}
+</div>
+{% endblock content %}
+{% endcomment %}

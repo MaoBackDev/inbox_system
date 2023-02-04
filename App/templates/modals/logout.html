@@ -1,0 +1,25 @@
+{% extends 'modals/base_modal.html' %}
+
+<!-- Modal id -->
+{% block modal-id %} id="logout-modal" {% endblock %}
+
+<!-- Modal title -->
+{% block modal-title %} 
+<i class="bi bi-door-open-fill"></i>&nbsp;&nbsp; Logout
+{% endblock %}
+
+<!-- Modal body -->
+{% block modal-body %} 
+<br>
+<span class="text-danger">
+    <i class="bi bi-door-open-fill" style="font-size: 64px;"></i>
+</span>
+<div class="text-danger mb-3 mt-4">
+    ¿Estás seguro que deseas finalizar la sesión?
+</div>
+{% endblock %}
+
+<!-- Modal button -->
+{% block modal-button %} 
+<a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm btn-modal">Logout</a>
+{% endblock %}

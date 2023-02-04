@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block autologout %}{% endblock autologout %}
+
+{% block title %} login {% endblock title %}
+{% block typed %}{% endblock typed %}
+
+{% block sidebar %}
+    <a href="{% url 'main:home' %}" class="btn btn-secondary btn-sm">Home</a>
+{% endblock sidebar %}
+
+{% block content %}
+<div class="container mt-5" id="card-login">
+    <div class="card p-3 login-border">
+        <span class="text-center mt-3 text-pulse"><strong>RESTRICTED ACCESS</strong></span>
+        <form action="" method="post" autocomplete="off">
+            {% csrf_token %}
+            <div class="input-group mb-2 mt-4">
+                <input type="text" class="form-control" name="username" placeholder="Username">
+            </div>
+            <div class="input-group mb-2">
+                <input type="password" class="form-control" id="password"  name="password" placeholder="Password">
+            </div>
+            <div class="form-check form-switch">
+                <input type="checkbox" class="form-check-input" onclick="myFunction()" style="float: right;">
+            </div>
+            <div class="d-grid gap-2 mt-3">
+                <button id="btn-enter" type="submit" class="btn btn-success btn-sm mt-4 mb-3">Login</button>
+            </div>
+        </form>
+        <center class="mt-5 mb-5">
+            <i class='bx bx-send bx-rotate-270 mt-2 mb-2' style="color: #d3d3d3; font-size: 60px;"></i>
+        </center>
+    </div>
+</div>
+{% endblock content %}

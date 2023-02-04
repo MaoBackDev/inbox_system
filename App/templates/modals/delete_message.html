@@ -1,0 +1,25 @@
+{% extends 'modals/base_modal.html' %}
+
+<!-- Modal id -->
+{% block modal-id %} id="delete-modal{{c.id}}" {% endblock %}
+
+<!-- Modal title -->
+{% block modal-title %} 
+<i class="bi bi-trash-fill"></i>&nbsp;&nbsp; Eliminar Mensaje
+{% endblock %}
+
+<!-- Modal body -->
+{% block modal-body %} 
+<div class="text-center text-danger">
+    <i class="bi bi-x-circle mb-4 mt-2" style="font-size: 50px;"></i>
+</div>
+<div class="text-center text-danger">
+    <span>¿Estás seguro que quieres eliminar el registro?</span>
+    <div class="text-dark mt-3 mb-2">Customer: <strong>{{c.name}}</strong></div>
+</div>
+{% endblock %}
+
+<!-- Modal button -->
+{% block modal-button %} 
+<a href="{% url 'main:del_message' c.id %}" class="btn btn-outline-danger btn-sm btn-modal">Eliminar</a>
+{% endblock %}

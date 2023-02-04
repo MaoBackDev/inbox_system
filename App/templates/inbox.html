@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% block title %} inbox {% endblock title %}
+
+<!-- Block image deleted -->
+{% block bg-image %}{% endblock bg-image %}
+{% block typed %}{% endblock typed %}
+
+
+{% block datetime %}
+    <div id="desk-datetime" class="text-light" style="font-size: 12px; margin-top: 5px;">
+        {% now 'l (m-d-Y)' %} &nbsp;
+        <span style="color: #8abaae; font-weight: bold;" id="clock"></span>
+    </div>                    
+{% endblock datetime %}
+
+{% block content %}
+<div class="container-fluid mt-3" style="width: 90%;">
+    <!-- INFORMATION CARDS SECTION -->
+    <div class="hide">
+        {% include 'dashboard/dashboard.html' %}
+    </div>
+    <br>
+
+    <!-- GLOBAL SEARCH -->
+    <form action="" class="hide">
+        <div class="input-group input-group-sm mb-3">
+            <input class="form-control input-sm" type="text" name="q" placeholder="Search for..." value="{{request.GET.q}}">
+            <button class="btn btn-secondary" title="Search">
+                <i class="bi bi-search"></i>
+            </button>
+            <a href="{% url 'main:inbox' %}" class="btn btn-dark" title="refresh" style="margin-left: 3px;">
+                <i class="bi bi-arrow-repeat"></i>
+            </a>
+        </div>
+    </form>
+
+    <!-- SECTION TABLE -->
+    <div class="col-lg-12 hide">
+        <div class="mt-3">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th style="width: 18%;">Nombre</th>
+                        <th style="width: 13%;">Teléfono</th>
+                        <th style="width: 18%;">Email</th>
+                        <th style="width: 18%;">Asunto</th>
+                        <th style="width: 15%;">Fecha</th>
+                        <th style="width: 10%;">Estado</th>
+                        <th style="width: 8%; text-align: center;" colspan="2">Acciones</th>
+                    </tr>
+                </thead>
+                <!-- DATA FROM BACKEND -->
+                <tbody>
+                    
+                    {% for c in customers %}       
+                    <tr id="check_td">
+                        <td>{{c.name}}</td>
+                        <td>{{c.phone}}</td>
+                        <td>{{c.email}}</td>
+                        <td>{{c.subject}}</td>
+                        <td>{{c.created_at | date:'m-d-Y  (H:i'}}</td>
+                        
+                        {% if c.status == 'Pending' %}
+                        <td class="text-danger">{{c.status}}</td>
+                        {% else %}
+                        <td>{{c.status}}</td>
+                        {% endif %}
+                        
+                        <td>
+                            <button class="btn btn-secondary btn-sm btn-action" title="Eliminar mensaje" data-bs-toggle="modal" data-bs-target="#delete-modal{{c.id}}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <a href="{% url 'main:customer' c.id %}" class="btn text-light btn-sm btn-action" title="Leer mensaje" style="background-color: #2e856e;">
+                                <i class="bi bi-envelope-at-fill"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                    <!-- MODAL DELETE CONFIRMATION -->
+                    {% include 'modals/delete_message.html' %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- ===========  PAGINATION ============== -->
+    <nav class="hide">
+        <ul class="pagination">
+        {% if customers.has_previous %}
+            <a href="?page=1" class="btn btn-outline-secondary mb-4" style="border-radius: 1px; border: 1px solid #d3d3d3;">
+                First
+            </a>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ customers.previous_page_number }}"><i class="bi bi-chevron-double-left"></i></a>
+            </li>
+        {% endif %}
+                
+            <li class="page-item">
+                <span class="page-link text-muted" style="border-radius: 1px; border: 1px solid #d3d3d3;">
+                    Página {{ customers.number }} of {{ customers.paginator.num_pages }}.
+                </span>
+            </li>
+                
+        {% if customers.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{customers.next_page_number}}">
+                    <i class="bi bi-chevron-double-right"></i>
+                </a>
+            </li>
+            <a href="?page={{customers.paginator.num_pages}}" class="btn btn-outline-secondary mb-4" style="border-radius: 1px; border: 1px solid #d3d3d3;"
+            >
+                Last
+            </a>
+        {% endif %}
+        </ul>
+    </nav>  
+</div>
+
+<!-- SEARCH FAILED -->
+<span class="text-danger" id="msg"></span>
+<a href="{% url 'main:inbox' %}" id="refresh"></a>
+{% endblock content %}
+
+
+
+{% comment %}
+    <nav>
+        {% if customers.has_other_pages %}
+        <ul class="pagination">
+            {% if customers.has_previous %}
+            <a href="?page=1" class="btn btn-outline-secondary mb-4" style="border-radius: 1px; border: ipx solid #d3d3d3;">First</a>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ customers.previous_page_number }}"><i class="bi bi-chevron-double-left"></i></a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"></li>
+            {% endif %}
+
+            
+            {% for i in customers.paginator.page_range %}
+                
+                {% if customers.number == i %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ i }}<span class="sr-only"></span></span>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                    </li>
+                {% endif %}
+                    
+            {% endfor %}
+
+            {% if customers.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{customers.next_page_number}}">
+                    <i class="bi bi-chevron-double-right"></i>
+                </a>
+            </li>
+            <a href="?page={{customers.paginator.num_pages}}" class="btn btn-outline-secondary mb-4" style="border-radius: 1px; border: ipx solid #d3d3d3;">
+                Last
+            </a>
+            {% else %}
+            <li class="page-item disabled"></li>
+            {% endif %}     
+        </ul>
+        {% endif %}
+    </nav>
+{% endcomment %}
+
+
+    

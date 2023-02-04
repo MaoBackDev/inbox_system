@@ -1,0 +1,25 @@
+{% extends 'modals/base_modal.html' %}
+
+<!-- Modal id -->
+{% block modal-id %} id="mark-modal" {% endblock %}
+
+<!-- Modal title -->
+{% block modal-title %} 
+<i class="bi bi-envelope-fill"></i>&nbsp;&nbsp; Marcar como leído
+{% endblock %}
+
+<!-- Modal body -->
+{% block modal-body %} 
+<div class="text-center mt-2 mb-3" style="color: #2e856e;">
+    <i class="bi bi-envelope-check-fill" style="font-size: 80px;"></i>
+</div>
+¿Te gustaría marcar este mensaje como leído? 
+{% endblock %}
+
+<!-- Modal button -->
+{% block modal-button %} 
+<a href="{% url 'main:inbox' %}" class="btn btn-outline-danger btn-sm btn-modal">No</a>
+<button style="background-color: #2e856e;" class="btn btn-modal btn-sm text-light">Si</button> 
+{% endblock %}
+
+{% block modal-button-close %} {% endblock %}
