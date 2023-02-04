@@ -2,6 +2,9 @@
 
 {% block title %} Error 404 {% endblock title %}
 
+<!-- Desactivar el autologout -->
+{% block autologout %}{% endblock autologout %}
+
 {% block sidebar %}
 {% if user.is_authenticated %}
     <a href="/inbox/" class="btn btn-secondary">Volver</a>

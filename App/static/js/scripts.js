@@ -91,3 +91,16 @@ setTimeout(function(){
         action.click()
     }
 }, 30 * 60000)   // 30 min 60000 = 1 min
+
+
+
+// FUNCTION TO SHOW PASSWORD
+function myFunction() {
+    let p = document.getElementById('password')
+    if(p.type === 'password'){
+        p.type = 'text'
+    }else {
+        p.type = 'password'
+    }
+}
+

@@ -53,17 +53,17 @@
                 <tbody>
                     
                     {% for c in customers %}       
-                    <tr id="check_td">
-                        <td>{{c.name}}</td>
-                        <td>{{c.phone}}</td>
-                        <td>{{c.email}}</td>
-                        <td>{{c.subject}}</td>
-                        <td>{{c.created_at | date:'m-d-Y  (H:i'}}</td>
+                    <tr id="check_td" class="text-td">
+                        <td id="top-table" label="Name">{{c.name}}</td>
+                        <td id="responsive-border" label="Phone">{{c.phone}}</td>
+                        <td id="responsive-border" label="Email">{{c.email}}</td>
+                        <td id="responsive-border" label="Subject">{{c.subject}}</td>
+                        <td id="responsive-border" label="Received on">{{c.created_at | date:'m-d-Y  (H:i'}}</td>
                         
                         {% if c.status == 'Pending' %}
-                        <td class="text-danger">{{c.status}}</td>
+                        <td id="responsive-border" label="Status" class="text-danger">{{c.status}}</td>
                         {% else %}
-                        <td>{{c.status}}</td>
+                        <td id="responsive-border" label="Status" >{{c.status}}</td>
                         {% endif %}
                         
                         <td>

@@ -205,21 +205,12 @@
     </script>
     {% endblock typed %}
 
-    <!-- Function pulse the text (login page) -->
     <script>
+        
+        // Function pulse the text (login page)  text intermitente
         (function pulse () {
             $('.text-pulse').fadeOut(1000).fadeIn(1000, pulse)
         }) ()
-
-        // FUNCTION TO SHOW PASSWORD
-        function myFunction() {
-            let p = document.getElementById('password')
-            if(p.type === 'password'){
-                p.type = 'text'
-            }else {
-                p.type = 'password'
-            }
-        }
 
         // FUNCTION CLOSE OFFCANVAS WHEN BUTTON OF MODAL IS CLICKED
         jQuery('#offcanvasRight, .offcanvas-body a').click(function() {
@@ -227,7 +218,7 @@
             jQuery('.offcanvas').offcanvas('hide')
         })
 
-        // function to accept until 2mb
+        // function to accept until 2mb al cargar un archivo
         let upload = document.getElementById('file')
         upload.onchange = function() {
             if(this.files[0].size > 2 * 1048576) {
